@@ -25,7 +25,7 @@ setup(
         'urllib3==1.25.10',
     ],
     url='https://github.com/maxpoint2point/PhoneBook',
-    license='',
+    license='MIT License',
     author='Максим',
     author_email='maxpoint2point@gmail.com',
     description=''
