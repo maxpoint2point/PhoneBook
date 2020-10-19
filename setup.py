@@ -24,7 +24,7 @@ setup(
         'uritemplate==3.0.0',
         'urllib3==1.25.10',
     ],
-    url='',
+    url='https://github.com/maxpoint2point/PhoneBook',
     license='',
     author='Максим',
     author_email='maxpoint2point@gmail.com',

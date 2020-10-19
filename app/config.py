@@ -11,3 +11,4 @@ __log = 'output.log'
 LOGFILE = os.path.join(os.path.dirname(__file__), __log)
 
 API = 'app/creds.json'
+SPREDSHEET = '1Dtmih0lmqfda1Y6SbWszhiOdClEFxEMPBAIlpEBx48g'
