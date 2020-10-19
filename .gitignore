@@ -1,0 +1,4 @@
+/venv/
+/app/creds.json
+/.idea
+*.log
