@@ -2,3 +2,4 @@
 /app/creds.json
 /.idea
 *.log
+config.py
