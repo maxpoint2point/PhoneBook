@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 import pymysql
 import time
 from pymysql.cursors import DictCursor
@@ -22,7 +21,7 @@ if __name__ != '__main__':
 start_time = time.time()
 log = open(config.LOGFILE, 'a')
 
-log.write(f'<{datetime.now()}>: Начата синхронизаци\n')
+log.write(f'<{datetime.now()}>: Start\n')
 
 CREDENTIALS_FILE = config.API
 try:
@@ -32,20 +31,20 @@ try:
             ['https://www.googleapis.com/auth/spreadsheets',
              'https://www.googleapis.com/auth/drive'])
     except:
-        log.write(f'<{datetime.now()}>: Отсутствует файл API ключа\n************\n')
+        log.write(f'<{datetime.now()}>: Missing API key\n************\n')
         log.close()
         exit(-1)
 
     httpAuth = credentials.authorize(httplib2.Http())
     service = apiclient.discovery.build('sheets', 'v4', http=httpAuth)
-    log.write(f'<{datetime.now()}>: Выполняется чтение из Google Sheets\n')
+    log.write(f'<{datetime.now()}>: Reading from Google Sheets\n')
     values = service.spreadsheets().values().get(
         spreadsheetId=config.SPREDSHEET,
         range='A2:C200000000',
         majorDimension='ROWS'
     ).execute()
 
-    log.write(f'<{datetime.now()}>: Данные получены, подключаемся к базе\n')
+    log.write(f'<{datetime.now()}>: Connecting to DB\n')
 
     try:
         connection = pymysql.connect(
@@ -57,28 +56,28 @@ try:
             cursorclass=DictCursor
         )
     except:
-        log.write(f'<{datetime.now()}>: Невозможно подключиться к БД\n************\n')
+        log.write(f'<{datetime.now()}>: Not Connect to DB\n************\n')
         log.close()
         exit(-1)
 
-    log.write(f'<{datetime.now()}>: Очищаем таблицу\n')
+    log.write(f'<{datetime.now()}>: Truncate table\n')
 
     connection.cursor().execute("TRUNCATE TABLE list")
 
     query = f"INSERT INTO {config.TABLE_NAME} (phone, name, manager) VALUES (%s, %s, %s)"
-    log.write(f'<{datetime.now()}>: Заносим данные в базу\n')
+    log.write(f'<{datetime.now()}>: Insert DATA\n')
 
     for val in values['values']:
         connection.cursor().execute(query, (val[0], val[1], safe__get(val, 2)))
 
     connection.commit()
-    log.write(f'<{datetime.now()}>: Данные обновлены, коммит транзакции\n')
+    log.write(f'<{datetime.now()}>: Commit\n')
     connection.close()
 
-    log.write(f'<{datetime.now()}>: Подключение к базе закрыто.\n')
+    log.write(f'<{datetime.now()}>: Close DB connections\n')
 except Exception as e:
     log.write(f'<{datetime.now()}>: {e} <------\n')
 finally:
-    log.write(f'<{datetime.now()}>: Скрипт завершен за {time.time() - start_time} секунд\n')
+    log.write(f'<{datetime.now()}>: Script ending {time.time() - start_time} in seconds\n')
     log.write('************\n')
     log.close()
