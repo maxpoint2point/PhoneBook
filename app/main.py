@@ -61,7 +61,7 @@ try:
 
     log.write(f'<{datetime.now()}>: Truncate table\n')
 
-    connection.cursor().execute("TRUNCATE TABLE list")
+    connection.cursor().execute(f"TRUNCATE TABLE {config.TABLE_NAME}")
 
     query = f"INSERT INTO {config.TABLE_NAME} (phone, name, manager) VALUES (%s, %s, %s)"
     log.write(f'<{datetime.now()}>: Insert DATA\n')
