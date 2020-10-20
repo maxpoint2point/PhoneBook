@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import pymysql
+import time
 from pymysql.cursors import DictCursor
 import httplib2
 import apiclient.discovery
@@ -17,7 +18,7 @@ def safe__get(val, idx):
 
 if __name__ != '__main__':
     exit(-1)
-
+start_time = time.time()
 log = open(config.LOGFILE, 'a')
 
 log.write(f'<{datetime.now()}>: Начата синхронизаци\n')
@@ -77,5 +78,6 @@ try:
 except Exception as e:
     log.write(f'<{datetime.now()}>: {e} <------\n')
 finally:
-    log.write(f'<{datetime.now()}>: Скрипт завершен\n************\n')
+    log.write(f'<{datetime.now()}>: Скрипт завершен за {time.time() - start_time} секунд\n')
+    log.write('************\n')
     log.close()
