@@ -7,6 +7,14 @@ from app import config
 from datetime import datetime
 from oauth2client.service_account import ServiceAccountCredentials
 
+
+def safe__get(val, idx):
+    try:
+        return val[idx]
+    except IndexError:
+        return 'default'
+
+
 if __name__ != '__main__':
     exit(-1)
 
@@ -59,15 +67,15 @@ try:
     log.write(f'<{datetime.now()}>: Заносим данные в базу\n')
 
     for val in values['values']:
-        connection.cursor().execute(query, (val[0], val[1], val[2]))
+        connection.cursor().execute(query, (val[0], val[1], safe__get(val, 2)))
 
     connection.commit()
     log.write(f'<{datetime.now()}>: Данные обновлены, коммит транзакции\n')
     connection.close()
 
     log.write(f'<{datetime.now()}>: Подключение к базе закрыто.\n')
-except:
-    log.write(f'<{datetime.now()}>: Что-то пошло не так!!!! <------\n')
+except Exception as e:
+    log.write(f'<{datetime.now()}>: {e} <------\n')
 finally:
     log.write(f'<{datetime.now()}>: Скрипт завершен\n************\n')
     log.close()
