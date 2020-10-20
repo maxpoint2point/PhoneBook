@@ -4,7 +4,7 @@ import time
 from pymysql.cursors import DictCursor
 import httplib2
 import apiclient.discovery
-from app import config
+import config
 from datetime import datetime
 from oauth2client.service_account import ServiceAccountCredentials
 
@@ -57,7 +57,6 @@ try:
         )
     except:
         log.write(f'<{datetime.now()}>: Not Connect to DB\n************\n')
-        log.close()
         exit(-1)
 
     log.write(f'<{datetime.now()}>: Truncate table\n')
