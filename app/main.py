@@ -40,7 +40,7 @@ try:
     log.write(f'<{datetime.now()}>: Reading from Google Sheets\n')
     values = service.spreadsheets().values().get(
         spreadsheetId=config.SPREDSHEET,
-        range='A2:C200000000',
+        range='B2:D200000000',
         majorDimension='ROWS'
     ).execute()
 
