@@ -1,9 +1,9 @@
 from setuptools import setup
-import app
+import PhoneBook
 
 setup(
     name='PhoneBook',
-    version=app.__version__,
+    version=PhoneBook.__version__,
     packages=[
         'cachetools==3.1.1',
         'certifi==2020.6.20',
