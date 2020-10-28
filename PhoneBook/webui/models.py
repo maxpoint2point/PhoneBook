@@ -10,15 +10,17 @@ class Phones(models.Model):
     manager = models.CharField("Менеджер", max_length=100, null=True, default=None)
 
     def save(self, *args, **kwargs):
-        super(Phones, self).save(*args, **kwargs)
+
         if not self.pk:
             log = Logging(
                 user=self.user,
                 log=f'Create new record {self.__str__()}',
                 phone=self,
             )
+            super(Phones, self).save(*args, **kwargs)
             log.save()
         else:
+            super(Phones, self).save(*args, **kwargs)
             log = Logging(
                 user=self.user,
                 log=f'Update record {self.__str__()}',
