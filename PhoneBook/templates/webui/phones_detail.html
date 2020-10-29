@@ -12,33 +12,10 @@
  {% if not user.is_authenticated %}
 <meta http-equiv="refresh" content="0; url={% url 'account_login'%}" />
  {% else %}
-
-    <table class="table">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Имя</th>
-      <th scope="col">Телефон</th>
-      <th scope="col">Менеджер</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row"></th>
-      <td>{{phone.name}}</td>
-      <td>{{phone.phone}}</td>
-      <td>{{phone.manager}}</td>
-    </tr>
-  {% for log in logs %}
-  <tr>
-      <th scope="row"></th>
-      <td>{{log.user}}</td>
-      <td>{{log.date}}</td>
-      <td>{{log.log}}</td>
-    </tr>
-  {% endfor %}
-  </tbody>
-</table>
+<form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Update">
+</form>
  {% endif %}
  </body>
 </html>

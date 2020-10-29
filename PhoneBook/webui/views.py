@@ -1,16 +1,15 @@
-from django.shortcuts import redirect, render
-from django.views.generic import ListView, CreateView
+from django.views import generic
 from .models import Phones, Logging
-from django.views.generic.base import View
 from .forms import PhonesForm
+from django.db.models import Q
 
 
-class PhonesView(ListView):
+class PhonesView(generic.ListView):
     model = Phones
     queryset = Phones.objects.all()
 
 
-class AddPhone(CreateView):
+class AddPhone(generic.CreateView):
     model = Phones
     form_class = PhonesForm
     success_url = "/"
@@ -20,9 +19,12 @@ class AddPhone(CreateView):
         return super().form_valid(form)
 
 
-class Search(ListView):
+class Search(generic.ListView):
     def get_queryset(self):
-        return Phones.objects.filter(name__icontains=self.request.GET.get("q"))
+        return Phones.objects.filter(
+            Q(name__icontains=self.request.GET.get("q")) |
+            Q(phone__icontains=self.request.GET.get("q"))
+        )
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -30,11 +32,9 @@ class Search(ListView):
         return context
 
 
-class PhoneDetail(View):
-    def get(self, request, pk):
-        phone = Phones.objects.get(pk=pk)
-        log = Logging.objects.filter(phone=phone)
-        return render(request, 'webui/phones_detail.html', {
-            'phone': phone,
-            'logs': log,
-        })
+class PhoneDetail(generic.UpdateView):
+    model = Phones
+    form_class = PhonesForm
+    template_name = 'webui/phones_detail.html'
+    success_url = "/"
+

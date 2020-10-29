@@ -7,7 +7,10 @@ class Phones(models.Model):
     name = models.CharField('Имя контакта', max_length=200)
     phone = models.CharField('Телефон', max_length=50, unique=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    manager = models.CharField("Менеджер", max_length=100, null=True, default=None)
+    manager = models.ForeignKey(User, on_delete=models.RESTRICT, related_name="manager", null=True)
+    # manager = models.CharField("Менеджер", max_length=100, null=True, default=None)
+
+    objects = models.Manager()
 
     def save(self, *args, **kwargs):
 
