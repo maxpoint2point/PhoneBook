@@ -125,5 +125,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-/PhoneBook/manage.py
 /PhoneBook/PhoneBook/my.cnf
